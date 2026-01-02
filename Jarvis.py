@@ -19,6 +19,8 @@ from tkinter import messagebox
 import random
 from datetime import datetime
 from modul_jarvis import Jarvis
+from backend_cipher import CipherBackend
+from backend_news import NewsBackend
 
 driver = None
 on_Jarvis = False
@@ -405,14 +407,10 @@ class JarvisPage(tk.Frame):
 
 
 class CipherPage(tk.Frame):
-    b = 5
     def __init__(self, parent, controller):
         super().__init__(parent, bg="#003333")
         self.controller = controller
-
-        self.alfabet = "абвгґдеєжзиіїйклмнопрстуфхцчшщьюя"
-        self.keyplus = 5
-        self.keyminus = self.find_inverse(self.keyplus, len(self.alfabet))
+        self.backend = CipherBackend()
 
         # Головний лівий контейнер
         left_frame = tk.Frame(self, bg="#003333")
@@ -454,92 +452,39 @@ class CipherPage(tk.Frame):
         tk.Button(self, text="🏠 Меню", bg="#222", fg="white",
                   command=lambda: self.controller.show_frame("MenuPage")).place(relx=0.95, rely=0.05, anchor="ne")
 
-    # --- Допоміжні функції ---
-    def find_inverse(self, key, mod):
-        for i in range(1, mod):
-            if (key * i) % mod == 1:
-                return i
-        return None
-
     def get_key_text(self):
-        return f"keyplus = {self.keyplus}   keyminus = {self.keyminus or '—'}"
+        return f"keyplus = {self.backend.keyplus}   keyminus = {self.backend.keyminus or '—'}"
 
     def update_key_label(self):
         self.key_label.config(text=self.get_key_text())
 
     def increase_key(self):
-        self.keyplus = ((self.keyplus + 1)) % len(self.alfabet)
-        if self.keyplus == 0:
-            self.keyplus = 1
-        self.keyminus = self.find_inverse(self.keyplus, len(self.alfabet))
+        self.backend.keyplus = ((self.backend.keyplus + 1)) % len(self.backend.alfabet)
+        if self.backend.keyplus == 0:
+            self.backend.keyplus = 1
+        self.backend.keyminus = self.backend.find_inverse(self.backend.keyplus, len(self.backend.alfabet))
         self.update_key_label()
 
     def decrease_key(self):
-        self.keyplus = ((self.keyplus - 1)) % len(self.alfabet)
-        if self.keyplus == 0:
-            self.keyplus = len(self.alfabet) - 1
-        self.keyminus = self.find_inverse(self.keyplus, len(self.alfabet))
+        self.backend.keyplus = ((self.backend.keyplus - 1)) % len(self.backend.alfabet)
+        if self.backend.keyplus == 0:
+            self.backend.keyplus = len(self.backend.alfabet) - 1
+        self.backend.keyminus = self.backend.find_inverse(self.backend.keyplus, len(self.backend.alfabet))
         self.update_key_label()
 
-    # --- 1️⃣ Шифрування / розшифрування ---
     def process_text(self):
         text = self.input_text.get("1.0", tk.END).strip().lower()
         self.output_text.delete("1.0", tk.END)
-        result = ""
-        mod = len(self.alfabet)
-        mode = self.mode.get()
-        for char in text:
-            if char in self.alfabet:
-                idx = self.alfabet.index(char)
-                if mode == "encode":
-                    new_idx = ((idx * self.keyplus) + self.b) % mod
-                else:
-                    if not self.keyminus:
-                        result = "❌ Цей keyplus не має оберненого числа!"
-                        break
-                    new_idx = ((idx - self.b) * self.keyminus) % mod
-                result += self.alfabet[new_idx]
-            else:
-                result += char
+        result = self.backend.process_text(text, self.mode.get())
         self.output_text.insert(tk.END, result)
 
-    # --- 2️⃣ 🔍 Відновлення шифру (нова функція) ---
     def recover_cipher(self):
         data = self.recover_entry.get().strip().split()
-        if len(data) != 4:
-            messagebox.showerror("Помилка", "Потрібно ввести рівно 4 числа через пробіл!")
-            return
-
-        try:
-            l = [int(i) for i in data]
-        except ValueError:
-            messagebox.showerror("Помилка", "Введення має містити лише числа!")
-            return
-
-        if l[0] < l[1]:
-            a = l[1] - l[0]
-            b = l[3] - l[2]
+        result = self.backend.recover_cipher(data)
+        if "Помилка" in result or "Не вдалося" in result:
+            messagebox.showerror("Помилка", result)
         else:
-            a = l[0] - l[1]
-            b = l[2] - l[3]
-
-        k = None
-        for i in range(1, 33):
-            if (a * i) % 33 == b % 33:
-                k = i
-                break
-
-        t = None
-        if k is not None:
-            for i in range(1, 33):
-                if (l[0] * k + i) % 33 == l[2] % 33:
-                    t = i
-                    break
-
-        if k is not None and t is not None:
-            messagebox.showinfo("Відновлений шифр", f"Відновлений шифр:\na = b*{k} + {t} (mod 33)")
-        else:
-            messagebox.showwarning("Результат", "Не вдалося знайти параметри шифру.")
+            messagebox.showinfo("Відновлений шифр", result)
 
 
 # --- Сторінка Меню ---
@@ -550,7 +495,6 @@ NEWS_API_URL = ('https://newsapi.org/v2/everything?'
        'apiKey=984a385872e24689b1f01ad8fc9d1167')
 
 class MenuPage(tk.Frame):
-    NEWS_API_URL = ('https://newsapi.org/v2/top-headlines?category=business&apiKey=984a385872e24689b1f01ad8fc9d1167')
     def __init__(self, parent, controller):
         super().__init__(parent, bg="#584C01")
         self.controller = controller
@@ -582,24 +526,9 @@ class MenuPage(tk.Frame):
         self.load_news()
 
     def load_news(self):
-        self.news_text.delete("1.0", tk.END)
-        try:
-            resp = requests.get(self.NEWS_API_URL, timeout=5)
-            data = resp.json()
-            articles = data.get("articles", [])
-        except Exception as e:
-            self.news_text.insert(tk.END, "Ошибка загрузки новостей:\n" + str(e))
-            return
-
-        if not articles:
-            self.news_text.insert(tk.END, "Нет новостей.")
-            return
-
-        # Показать первые 5 новостей
-        for i, art in enumerate(articles[:]):
-            title = art.get("title", "Без заголовка")
-            desc = art.get("description", "")
-            self.news_text.insert(tk.END, f"{i+1}. {title}\n{desc}\n\n")
+        backend = NewsBackend()
+        news = backend.fetch_news()
+        self.news_text.insert(tk.END, news)
 
 
 # --- Запуск ---
