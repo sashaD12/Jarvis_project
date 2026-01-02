@@ -18,7 +18,7 @@ import requests
 from tkinter import messagebox
 import random
 from datetime import datetime
-
+from modul_jarvis import Jarvis
 
 driver = None
 on_Jarvis = False
@@ -350,72 +350,7 @@ class JarvisPage(tk.Frame):
     def get_text(self):
         global driver, on_Jarvis
         text = self.check.get("1.0", tk.END).strip().lower()
-        if not on_Jarvis:
-            return
-        try:
-            _ = driver.title
-        except:
-            try:
-                driver.quit()
-            except:
-                pass
-            driver = uc.Chrome()
-            driver.set_window_position(0, 0)
-            driver.set_window_size(1024, 768)
-
-        if "ютуб" in text:
-            self.Yootube(text)
-        elif "запусти" in text:
-            self.Zalupusk(text)
-        elif "відкри" in text:
-            self.poisk(text)
-        self.check.delete("1.0", tk.END)
-
-    def poisk(self, text):
-        global driver
-        try:
-            zapit = text.split("відкри", 1)[1].strip()
-        except IndexError:
-            return
-        try:
-            driver.execute_script("window.open('https://www.google.com', '_blank');")
-            driver.switch_to.window(driver.window_handles[-1])
-            search_input = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.NAME, "q")))
-            search_input.send_keys(zapit)
-            search_input.send_keys(Keys.RETURN)
-        except Exception as e:
-            print("Помилка пошуку:", e)
-
-    def Zalupusk(self, text):
-        global driver
-        try:
-            zapit = text.split("запусти", 1)[1].strip()
-        except IndexError:
-            return
-        youtube_tab = None
-        for tab in driver.window_handles:
-            driver.switch_to.window(tab)
-            if "youtube.com" in driver.current_url:
-                youtube_tab = tab
-                break
-        if not youtube_tab:
-            driver.execute_script("window.open('https://www.youtube.com', '_blank');")
-            driver.switch_to.window(driver.window_handles[-1])
-        else:
-            driver.switch_to.window(youtube_tab)
-        try:
-            search_input = WebDriverWait(driver, 10).until(
-                EC.presence_of_element_located((By.NAME, "search_query")))
-            search_input.clear()
-            search_input.send_keys(zapit)
-            search_input.send_keys(Keys.RETURN)
-        except Exception as e:
-            print("Помилка YouTube:", e)
-
-    def Yootube(self, text):
-        global driver
-        if "відкри" in text:
-            driver.execute_script("window.open('https://www.youtube.com', '_blank');")
+        Jarvis(text)
 
     def start_stop(self):
         global on_Jarvis
