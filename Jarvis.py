@@ -21,6 +21,7 @@ from datetime import datetime
 from modul_jarvis import Jarvis
 from backend_cipher import CipherBackend
 from backend_news import NewsBackend
+from microphone_capture import capture_text_from_microphone
 
 driver = None
 on_Jarvis = False
@@ -94,52 +95,23 @@ class JarvisPage(tk.Frame):
         on_Jarvis = not on_Jarvis
 
     def start_listening(self):
-        global listening, stream
-        if listening:
-            listening = False
-            try:
-                if stream:
-                    stream.stop_stream()
-                    stream.close()
-            except:
-                pass
-            self.mic_btn.config(text="🎤 Ввімкнути")
-            return
+        """
+        Starts the microphone capture and processes the recognized text with Jarvis.
+        """
+        self.mic_btn.config(text="🛑 Зупинити")
+        print("🎤 Слухаю...")
 
-        def listen():
-            global listening, stream
-            #model_path = r"C:\Users\apple_man\Desktop\Jarvis_project\model\vosk-model-uk-v3"
-            if not os.path.exists(model_path):
-                print("❗ Модель не знайдено.")
-                return
-            model = Model(model_path)
-            recognizer = KaldiRecognizer(model, 16000)
-            p = pyaudio.PyAudio()
-            stream = p.open(format=pyaudio.paInt16, channels=1, rate=16000, input=True, frames_per_buffer=8000)
-            stream.start_stream()
-            listening = True
-            self.after(0, lambda: self.mic_btn.config(text="🛑 Зупинити"))
-            print("🎤 Слухаю...")
-
-            result_text = ""
-            while listening:
-                data = stream.read(4000, exception_on_overflow=False)
-                if recognizer.AcceptWaveform(data):
-                    result = json.loads(recognizer.Result())
-                    result_text = result.get("text", "")
-                    break
-            stream.stop_stream()
-            stream.close()
-            p.terminate()
-            listening = False
-            self.after(0, lambda: self.mic_btn.config(text="🎤 Ввімкнути"))
+        try:
+            result_text = capture_text_from_microphone()
             if result_text.strip():
-                self.after(0, lambda: self.check.delete("1.0", tk.END))
-                self.after(0, lambda: self.check.insert(tk.END, result_text))
-                self.after(0, self.get_text)
-
-        threading.Thread(target=listen).start()
-
+                self.check.delete("1.0", tk.END)
+                self.check.insert(tk.END, result_text)
+                Jarvis(result_text)  # Process the recognized text with Jarvis
+        except Exception as e:
+            print(f"❗ Помилка під час розпізнавання: {e}")
+        finally:
+            self.mic_btn.config(text="🎤 Ввімкнути")
+            print("🎤 Зупинено.")
 
 class CipherPage(tk.Frame):
     def __init__(self, parent, controller):

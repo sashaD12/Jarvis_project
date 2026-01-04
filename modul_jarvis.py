@@ -22,7 +22,7 @@ class Jarvis:
 
     def recognize_commands(self, text):
         text = text.lower()
-        system_trigger = "атас"
+        system_trigger = ""
         trigger_pos = text.find(system_trigger)
         if trigger_pos == -1:
             print(" Система не активирована. Игнорирую команды.")
