@@ -3,12 +3,7 @@ import time
 import threading
 import random
 from datetime import datetime
-
-import tkinter as tk
-import threading
-import random
-import time
-from datetime import datetime
+import Jarvis
 
 
 class BootScreen:
@@ -268,6 +263,7 @@ class BootScreen:
                 self.master.after(300, lambda: animate_dots(i + 1))
             else:
                 self.master.destroy()
+                Jarvis.start_rial()
 
         animate_dots()
 
