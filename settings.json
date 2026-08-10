@@ -1,0 +1,55 @@
+{
+  "wake_word": "атас",
+  "wake_word_aliases": [
+    "атос",
+    "ата з",
+    "а тас",
+    "атась",
+    "ата",
+    "пас",
+    "паса",
+    "паси",
+    "ніда",
+    "нада",
+    "ataus",
+    "atas",
+    "a tas",
+    "ata s",
+    "pass",
+    "pas"
+  ],
+  "stop_words": ["шухер", "стоп"],
+  "default_city": "Kyiv",
+  "weather": {
+    "lat": 50.45,
+    "lon": 30.52
+  },
+  "save_training_data": true,
+  "whisper": {
+    "model_size": "small",
+    "device": "cpu",
+    "compute_type": "int8",
+    "language": "uk",
+    "max_record_sec": 20,
+    "beam_size": 5,
+    "initial_prompt": "атас запусти відкрий епік геймс stalcraft погода браузер ютуб музика час вимкни стоп шухер"
+  },
+  "neural": {
+    "enabled": true,
+    "model": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+    "text_threshold": 0.52,
+    "program_threshold": 0.42,
+    "intent_threshold": 0.62,
+    "intent_first": true
+  },
+  "llm": {
+    "enabled": true,
+    "provider": "ollama",
+    "base_url": "http://127.0.0.1:11434",
+    "model": "llama3.2",
+    "timeout_sec": 90,
+    "prefer_over_keywords": true,
+    "temperature": 0.1,
+    "use_context": true
+  }
+}

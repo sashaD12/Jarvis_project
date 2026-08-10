@@ -1,3 +1,6 @@
 model/
 __pycache__/
 training_data/
+.env
+name_resolve_cache.json
+programs_cache.json

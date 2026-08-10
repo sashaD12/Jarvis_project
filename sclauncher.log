@@ -1,0 +1,274 @@
+[2026-08-10T15:27:35.791024800+03:00] INFO: System theme: None
+[2026-08-10T15:27:35.791157300+03:00] INFO: Obtaining realm info...
+[2026-08-10T15:27:35.792412100+03:00] INFO: Window attributes for id `Id(
+    1,
+)`: WindowAttributes {
+    inner_size: Some(
+        Logical(
+            LogicalSize {
+                width: 740.0,
+                height: 450.0,
+            },
+        ),
+    ),
+    min_inner_size: None,
+    max_inner_size: None,
+    position: Some(
+        Physical(
+            PhysicalPosition {
+                x: 498,
+                y: 319,
+            },
+        ),
+    ),
+    resizable: false,
+    enabled_buttons: WindowButtons(
+        CLOSE | MINIMIZE,
+    ),
+    title: "EXENS Launcher",
+    maximized: false,
+    visible: false,
+    transparent: false,
+    blur: false,
+    decorations: false,
+    window_icon: Some(
+        RaiiIcon {
+            handle: 183437733,
+        },
+    ),
+    preferred_theme: None,
+    resize_increments: None,
+    content_protected: false,
+    window_level: Normal,
+    active: true,
+    cursor: Icon(
+        Default,
+    ),
+    parent_window: None,
+    fullscreen: None,
+    platform_specific: PlatformSpecificWindowAttributes {
+        owner: None,
+        menu: None,
+        taskbar_icon: None,
+        no_redirection_bitmap: false,
+        drag_and_drop: true,
+        skip_taskbar: false,
+        class_name: "Window Class",
+        decoration_shadow: false,
+        backdrop_type: Auto,
+        clip_children: true,
+        border_color: None,
+        title_background_color: None,
+        title_text_color: None,
+        corner_preference: None,
+    },
+}
+[2026-08-10T15:27:35.798289400+03:00] DEBUG: starting new connection: https://stalcraft.net/
+[2026-08-10T15:27:35.877299100+03:00] INFO: Settings {
+    present_mode: AutoVsync,
+    backends: Backends(
+        GL,
+    ),
+    default_font: Font {
+        family: SansSerif,
+        weight: Normal,
+        stretch: Normal,
+        style: Normal,
+    },
+    default_text_size: Pixels(
+        16.0,
+    ),
+    antialiasing: Some(
+        MSAAx4,
+    ),
+}
+[2026-08-10T15:27:35.877531700+03:00] INFO: Available adapters: [
+    AdapterInfo {
+        name: "Intel(R) RaptorLake-S Mobile Graphics Controller",
+        vendor: 32902,
+        device: 0,
+        device_type: IntegratedGpu,
+        driver: "",
+        driver_info: "4.6.0 - Build 32.0.101.7076",
+        backend: Gl,
+    },
+]
+[2026-08-10T15:27:35.877610+03:00] INFO: Selected: AdapterInfo {
+    name: "Intel(R) RaptorLake-S Mobile Graphics Controller",
+    vendor: 32902,
+    device: 0,
+    device_type: IntegratedGpu,
+    driver: "",
+    driver_info: "4.6.0 - Build 32.0.101.7076",
+    backend: Gl,
+}
+[2026-08-10T15:27:35.877637400+03:00] INFO: Available formats: Copied {
+    it: Iter(
+        [
+            Rgba8UnormSrgb,
+            Bgra8UnormSrgb,
+            Rgba8Unorm,
+            Bgra8Unorm,
+            Rgba16Float,
+        ],
+    ),
+}
+[2026-08-10T15:27:35.877650900+03:00] INFO: Available alpha modes: [
+    Opaque,
+]
+[2026-08-10T15:27:35.877657700+03:00] INFO: Selected format: Rgba8UnormSrgb with alpha mode: Auto
+[2026-08-10T15:27:35.937341+03:00] WARN: Failed to load a font face 0 from 'C:\WINDOWS\Fonts\mstmc.ttf' cause malformed font.
+[2026-08-10T15:27:36.070092+03:00] TRACE: shouldn't retry!
+[2026-08-10T15:27:36.071279200+03:00] INFO: Realm info obtained.
+[2026-08-10T15:27:36.071310300+03:00] INFO: Starting update.json attempt 1 from domain 'sc-exens.cdn77.exbo.net' (reason=initial)
+[2026-08-10T15:27:36.071384+03:00] DEBUG: starting new connection: https://sc-exens.cdn77.exbo.net/
+[2026-08-10T15:27:36.489212700+03:00] TRACE: shouldn't retry!
+[2026-08-10T15:27:36.489450600+03:00] INFO: Selected update.json domain 'sc-exens.cdn77.exbo.net' (attempt 1)
+[2026-08-10T15:27:36.492079+03:00] INFO: Group: kick.
+[2026-08-10T15:27:36.492115800+03:00] INFO: Stopping service...
+[2026-08-10T15:27:36.493063600+03:00] INFO: Stopping service exens...
+[2026-08-10T15:27:36.493153500+03:00] WARN: Failed to stop service. It's already stopped.
+[2026-08-10T15:27:36.493284200+03:00] INFO: Service stopped.
+[2026-08-10T15:27:36.493397400+03:00] INFO: Fetching update info
+[2026-08-10T15:27:36.494032500+03:00] INFO: Calculating hashes for existing files
+[2026-08-10T15:27:36.543744800+03:00] INFO: All files are up to date
+[2026-08-10T15:27:36.544276+03:00] INFO: Ensuring service is running. Current status: SERVICE_STATUS_CURRENT_STATE(1)
+[2026-08-10T15:27:36.544288600+03:00] INFO: Starting service...
+[2026-08-10T15:27:38.905915200+03:00] INFO: Service started
+[2026-08-10T16:22:55.940534700+03:00] INFO: System theme: None
+[2026-08-10T16:22:55.940992800+03:00] INFO: Obtaining realm info...
+[2026-08-10T16:22:55.942020500+03:00] INFO: Window attributes for id `Id(
+    1,
+)`: WindowAttributes {
+    inner_size: Some(
+        Logical(
+            LogicalSize {
+                width: 740.0,
+                height: 450.0,
+            },
+        ),
+    ),
+    min_inner_size: None,
+    max_inner_size: None,
+    position: Some(
+        Physical(
+            PhysicalPosition {
+                x: 498,
+                y: 319,
+            },
+        ),
+    ),
+    resizable: false,
+    enabled_buttons: WindowButtons(
+        CLOSE | MINIMIZE,
+    ),
+    title: "EXENS Launcher",
+    maximized: false,
+    visible: false,
+    transparent: false,
+    blur: false,
+    decorations: false,
+    window_icon: Some(
+        RaiiIcon {
+            handle: 275122863,
+        },
+    ),
+    preferred_theme: None,
+    resize_increments: None,
+    content_protected: false,
+    window_level: Normal,
+    active: true,
+    cursor: Icon(
+        Default,
+    ),
+    parent_window: None,
+    fullscreen: None,
+    platform_specific: PlatformSpecificWindowAttributes {
+        owner: None,
+        menu: None,
+        taskbar_icon: None,
+        no_redirection_bitmap: false,
+        drag_and_drop: true,
+        skip_taskbar: false,
+        class_name: "Window Class",
+        decoration_shadow: false,
+        backdrop_type: Auto,
+        clip_children: true,
+        border_color: None,
+        title_background_color: None,
+        title_text_color: None,
+        corner_preference: None,
+    },
+}
+[2026-08-10T16:22:55.946971900+03:00] DEBUG: starting new connection: https://stalcraft.net/
+[2026-08-10T16:22:56.073855100+03:00] INFO: Settings {
+    present_mode: AutoVsync,
+    backends: Backends(
+        GL,
+    ),
+    default_font: Font {
+        family: SansSerif,
+        weight: Normal,
+        stretch: Normal,
+        style: Normal,
+    },
+    default_text_size: Pixels(
+        16.0,
+    ),
+    antialiasing: Some(
+        MSAAx4,
+    ),
+}
+[2026-08-10T16:22:56.074477200+03:00] INFO: Available adapters: [
+    AdapterInfo {
+        name: "Intel(R) RaptorLake-S Mobile Graphics Controller",
+        vendor: 32902,
+        device: 0,
+        device_type: IntegratedGpu,
+        driver: "",
+        driver_info: "4.6.0 - Build 32.0.101.7076",
+        backend: Gl,
+    },
+]
+[2026-08-10T16:22:56.074617700+03:00] INFO: Selected: AdapterInfo {
+    name: "Intel(R) RaptorLake-S Mobile Graphics Controller",
+    vendor: 32902,
+    device: 0,
+    device_type: IntegratedGpu,
+    driver: "",
+    driver_info: "4.6.0 - Build 32.0.101.7076",
+    backend: Gl,
+}
+[2026-08-10T16:22:56.074650200+03:00] INFO: Available formats: Copied {
+    it: Iter(
+        [
+            Rgba8UnormSrgb,
+            Bgra8UnormSrgb,
+            Rgba8Unorm,
+            Bgra8Unorm,
+            Rgba16Float,
+        ],
+    ),
+}
+[2026-08-10T16:22:56.074669800+03:00] INFO: Available alpha modes: [
+    Opaque,
+]
+[2026-08-10T16:22:56.074681+03:00] INFO: Selected format: Rgba8UnormSrgb with alpha mode: Auto
+[2026-08-10T16:22:56.143270400+03:00] WARN: Failed to load a font face 0 from 'C:\WINDOWS\Fonts\mstmc.ttf' cause malformed font.
+[2026-08-10T16:22:56.148743100+03:00] TRACE: shouldn't retry!
+[2026-08-10T16:22:56.151111900+03:00] INFO: Realm info obtained.
+[2026-08-10T16:22:56.151512300+03:00] INFO: Starting update.json attempt 1 from domain 'sc-exens.cdn77.exbo.net' (reason=initial)
+[2026-08-10T16:22:56.151974200+03:00] DEBUG: starting new connection: https://sc-exens.cdn77.exbo.net/
+[2026-08-10T16:22:56.357944300+03:00] TRACE: shouldn't retry!
+[2026-08-10T16:22:56.358023800+03:00] INFO: Selected update.json domain 'sc-exens.cdn77.exbo.net' (attempt 1)
+[2026-08-10T16:22:56.359973500+03:00] INFO: Group: kick.
+[2026-08-10T16:22:56.359987300+03:00] INFO: Stopping service...
+[2026-08-10T16:22:56.360361300+03:00] INFO: Stopping service exens...
+[2026-08-10T16:22:56.360397700+03:00] WARN: Failed to stop service. It's already stopped.
+[2026-08-10T16:22:56.360460100+03:00] INFO: Service stopped.
+[2026-08-10T16:22:56.360476+03:00] INFO: Fetching update info
+[2026-08-10T16:22:56.360716900+03:00] INFO: Calculating hashes for existing files
+[2026-08-10T16:22:56.395186100+03:00] INFO: All files are up to date
+[2026-08-10T16:22:56.395676800+03:00] INFO: Ensuring service is running. Current status: SERVICE_STATUS_CURRENT_STATE(1)
+[2026-08-10T16:22:56.395694600+03:00] INFO: Starting service...
+[2026-08-10T16:22:58.576538800+03:00] INFO: Service started
