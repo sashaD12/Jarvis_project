@@ -4,3 +4,8 @@ training_data/
 .env
 name_resolve_cache.json
 programs_cache.json
+frontend/node_modules/
+frontend/dist/
+*.pyc
+.venv/
+venv/

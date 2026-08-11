@@ -1,0 +1,107 @@
+:root {
+  --bg: #000010;
+  --fg: #00ffcc;
+  --fg-dim: #00ffcc99;
+  --panel: #000018;
+  --border: #00ffcc33;
+  --danger: #ff4466;
+  --ok: #00ff88;
+  --font: Consolas, "JetBrains Mono", ui-monospace, monospace;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font);
+}
+
+body {
+  background-image:
+    linear-gradient(180deg, rgba(0, 255, 204, 0.03) 0%, transparent 40%),
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 255, 204, 0.02) 2px,
+      rgba(0, 255, 204, 0.02) 4px
+    );
+  background-attachment: fixed;
+}
+
+@keyframes pulse-listen {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(0, 255, 204, 0.35);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(0, 255, 204, 0);
+  }
+}
+
+@keyframes scanline {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100vh);
+  }
+}
+
+.riat-btn {
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--fg);
+  font-family: var(--font);
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.riat-btn:hover {
+  background: rgba(0, 255, 204, 0.08);
+  border-color: var(--fg);
+}
+
+.riat-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.riat-btn-danger {
+  color: var(--danger);
+  border-color: rgba(255, 68, 102, 0.45);
+}
+
+.riat-btn-danger:hover {
+  background: rgba(255, 68, 102, 0.1);
+  border-color: var(--danger);
+}
+
+.riat-input,
+.riat-textarea {
+  width: 100%;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  color: var(--fg);
+  font-family: var(--font);
+  padding: 0.6rem 0.75rem;
+  outline: none;
+}
+
+.riat-input:focus,
+.riat-textarea:focus {
+  border-color: var(--fg);
+}
+
+.riat-panel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+}
+
+.listening-pulse {
+  animation: pulse-listen 1.4s ease-in-out infinite;
+}

@@ -2,6 +2,10 @@ faster-whisper
 pyaudio
 numpy
 requests
-tkintermapview
 python-dotenv
 fastembed
+fastapi
+uvicorn[standard]
+websockets
+pydantic
+pywebview

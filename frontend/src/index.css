@@ -1,0 +1,13 @@
+@import "tailwindcss";
+@import "./theme/riat.css";
+
+@theme {
+  --color-riat-bg: #000010;
+  --color-riat-fg: #00ffcc;
+  --color-riat-dim: #00ffcc99;
+  --color-riat-panel: #000018;
+  --color-riat-border: #00ffcc33;
+  --color-riat-danger: #ff4466;
+  --color-riat-ok: #00ff88;
+  --font-mono: Consolas, "JetBrains Mono", ui-monospace, monospace;
+}

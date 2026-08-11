@@ -1,28 +1,44 @@
 # Jarvis / R.I.A.T.
 
-Desktop voice/text assistant (Python + Tkinter) with multilingual speech recognition (faster-whisper), cipher tool, news, and map.
+Desktop voice/text assistant: native Windows window (pywebview) + React UI + local FastAPI (faster-whisper, cipher, news, map).
+
+## Stack
+
+- **Desktop shell:** pywebview (native app window, not a browser tab)
+- **UI:** React + Vite + TypeScript + Tailwind (`frontend/`)
+- **API:** FastAPI + WebSocket (`backend/`) on localhost inside the app
+- **Theme:** R.I.A.T. tactical (`#000010` / `#00FFCC`)
 
 ## Requirements
 
-- Python 3.13+ (see `Start_Jarvis.bat`)
+- Python 3.13+
+- Node.js 20+ (build UI once)
+- Microsoft Edge WebView2 runtime (usually already on Windows 10/11)
 - Microphone
-- Internet on first run (Whisper model download into Hugging Face cache)
+- Internet on first Whisper model download
 
 ## Setup
 
-1. Install dependencies:
+1. Python deps:
 
 ```bash
-pip install -r requirements.txt
+py -3.13 -m pip install -r requirements.txt
 ```
 
-2. Copy env file and set secrets:
+2. Build the UI (once, or after frontend changes):
+
+```bash
+cd frontend
+npm install
+npm run build
+cd ..
+```
+
+3. Env:
 
 ```bash
 copy .env.example .env
 ```
-
-Edit `.env`:
 
 ```text
 NEWS_API_KEY=your_key_from_newsapi.org
@@ -30,18 +46,13 @@ WHISPER_MODEL_SIZE=
 WHISPER_DEVICE=
 ```
 
-Optional env overrides for Whisper (otherwise values from `settings.json` → `whisper`):
-
-- `WHISPER_MODEL_SIZE` — e.g. `tiny`, `base`, `small`, `medium`
-- `WHISPER_DEVICE` — e.g. `cpu` or `cuda`
-
-Default model is `small` on CPU (`int8`). First microphone use downloads the model automatically.
-
 ## Run
 
 ```bat
 Start_Jarvis.bat
 ```
+
+Opens a **desktop window** titled `R.I.A.T. Special System`. The bat file builds the UI if `frontend/dist` is missing.
 
 Or:
 
@@ -49,15 +60,27 @@ Or:
 py -3.13 Start_Jarvis_Program.py
 ```
 
-Quick mic test (speak, then pause ~2s):
+Dev UI (optional, browser for styling only):
 
 ```bash
-py -3.13 microphone_capture.py
+py -3.13 -m uvicorn backend.main:app --host 127.0.0.1 --port 8000
+cd frontend
+npm run dev
 ```
+
+## UI modules
+
+| Route | Role |
+|-------|------|
+| `/boot` | Boot sequence |
+| `/menu` | Navigation + news |
+| `/jarvis` | Power, text/mic commands, status log |
+| `/cipher` | Encode/decode + key recover |
+| `/map` | Leaflet map + markers |
 
 ## Voice / text commands
 
-Wake word (default): `атас` — configured in `settings.json`.
+Wake word (default): `атас` — in `settings.json`.
 
 Examples:
 
@@ -67,83 +90,52 @@ Examples:
 - `атас включи музику shape of you`
 - `атас покажи погоду`
 - `атас відкрий блокнот`
-- `атас вимкни комп'ютер` (asks for confirmation)
+- `атас вимкни комп'ютер` (confirmation modal)
 
-Stop listening phrases: `шухер` or `стоп` (`settings.json` → `stop_words`). Recording also stops after silence or UI stop button.
+Stop phrases: `шухер` / `стоп`. On the Jarvis page, set **Start Jarvis: ON** before commands run.
 
-On the Jarvis page, press **Start Jarvis: ON** before text/mic commands are executed.
+Mic capture stays on the Python host (PyAudio) via WebSocket `/ws/jarvis`.
 
-## Configure commands via JSON
+## Configure via JSON
 
 ### `settings.json`
 
-- `wake_word` — activation phrase
-- `stop_words` — stop phrases in transcribed text
-- `weather.lat` / `weather.lon` — Open-Meteo location
-- `save_training_data` — save mic clips under `training_data/`
-- `whisper.model_size` / `device` / `compute_type` / `language` / `max_record_sec`
-  - `language: null` = auto-detect (Ukrainian + English in one phrase)
-- `llm` — local LLM command parser (Ollama / LM Studio)
-  - `enabled`, `provider` (`ollama` | `openai_compat`), `base_url`, `model`
-  - `prefer_over_keywords: true` — LLM result wins when available
+- `wake_word`, `stop_words`
+- `weather.lat` / `weather.lon`
+- `whisper.*`, `neural.*`, `llm.*`
 
 ### Local LLM (Ollama)
 
 1. Install [Ollama](https://ollama.com/download)
 2. `ollama pull llama3.2`
-3. Keep Ollama running (`ollama serve` if needed)
-4. Defaults in `settings.json` → `llm` already point to `http://127.0.0.1:11434`
-
-LM Studio: set `"provider": "openai_compat"`, `"base_url": "http://127.0.0.1:1234/v1"`, and your loaded model name.
+3. Defaults in `settings.json` → `llm` point to `http://127.0.0.1:11434`
 
 If the LLM is offline, Jarvis falls back to keywords + neural embeddings.
 
 ### `commands.json`
 
-Each command:
-
 | Field | Meaning |
 |-------|---------|
 | `id` | unique id |
-| `keywords` | exact/fuzzy phrases to match |
-| `examples` | natural-language phrases for neural intent |
-| `priority` | higher wins on overlap |
-| `action` | handler name in code |
-| `params` | action parameters (e.g. `url`) |
+| `keywords` | exact/fuzzy phrases |
+| `examples` | neural intent phrases |
+| `priority` | higher wins |
+| `action` | handler name |
+| `params` | action parameters |
 
-`programs` maps spoken names to executables for `open_program`.
-
-The parser order: local LLM (if online) → keywords → neural command check.
-
-Example — add a new URL command without Python changes:
-
-```json
-{
-  "id": "open_github",
-  "keywords": ["відкрий гітхаб", "github"],
-  "examples": ["відкрий гітхаб", "давай гітхаб", "хочу на github"],
-  "priority": 5,
-  "action": "open_url",
-  "params": { "url": "https://github.com" }
-}
-```
-
-Restart the app after editing JSON.
+Parser order: local LLM → keywords → neural.
 
 Built-in actions: `open_url`, `youtube_search`, `show_time`, `weather`, `shutdown`, `open_program`.
 
-## Modules
+## Project layout
 
-| File | Role |
+| Path | Role |
 |------|------|
-| `Start_Jarvis_Program.py` | launcher + boot screen |
-| `Jarvis.py` | main UI pages |
+| `backend/main.py` | FastAPI app |
+| `backend/api/` | REST routes |
+| `backend/ws/` | Jarvis WebSocket |
+| `frontend/` | React UI |
 | `modul_jarvis.py` | command parser |
-| `backend_actions.py` | command actions |
-| `config_loader.py` | JSON settings/commands |
-| `neural_parser.py` | neural intent + text/program refinement |
-| `local_llm.py` | local LLM command parser (Ollama/LM Studio) |
-| `microphone_capture.py` | faster-whisper capture |
-| `map.py` | map page |
-| `backend_cipher.py` | cipher |
-| `backend_news.py` | NewsAPI |
+| `backend_actions.py` | OS/web actions |
+| `microphone_capture.py` | Whisper capture |
+| `Jarvis.py` / `intro.py` / `map.py` | legacy Tkinter (unused by launcher) |
